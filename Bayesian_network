@@ -1,0 +1,45 @@
+# Prior probabilities
+p_play_yes = 9 / 14  # P(PlayTennis = yes)
+p_play_no = 5 / 14   # P(PlayTennis = no)
+
+# Likelihood probabilities (assumed values based on the given data)
+likelihood_yes = {
+    'sunny': 3 / 9,   # P(outlook = sunny | PlayTennis = yes)
+    'cool': 3 / 9,    # P(temperature = cool | PlayTennis = yes)
+    'high': 3 / 9,    # P(humidity = high | PlayTennis = yes)
+    'false': 6 / 9    # P(windy = false | PlayTennis = yes)
+}
+
+likelihood_no = {
+    'sunny': 2 / 5,   # P(outlook = sunny | PlayTennis = no)
+    'cool': 1 / 5,    # P(temperature = cool | PlayTennis = no)
+    'high': 4 / 5,    # P(humidity = high | PlayTennis = no)
+    'false': 2 / 5    # P(windy = false | PlayTennis = no)
+}
+
+# New sample attributes
+new_sample = {
+    'sunny': 0,   # outlook = sunny
+    'cool': 1,    # temperature = cool
+    'high': 1,    # humidity = high
+    'false': 1    # windy = false
+}
+
+# Calculate probability for PlayTennis = yes
+prob_yes = p_play_yes
+for attr, value in new_sample.items():
+    prob_yes *= likelihood_yes[attr] if value == 1 else (1 - likelihood_yes[attr])
+
+# Calculate probability for PlayTennis = no
+prob_no = p_play_no
+for attr, value in new_sample.items():
+    prob_no *= likelihood_no[attr] if value == 1 else (1 - likelihood_no[attr])
+
+# Normalize probabilities
+total_probability = prob_yes + prob_no
+prob_yes /= total_probability
+prob_no /= total_probability
+
+# Print the probabilities
+print(f"Probability of PlayTennis = yes: {prob_yes:.4f}")
+print(f"Probability of PlayTennis = no: {prob_no:.4f}")
